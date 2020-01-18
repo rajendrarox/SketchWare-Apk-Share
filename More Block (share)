@@ -1,0 +1,38 @@
+private void shareApplication() { 
+						android.content.pm.ApplicationInfo app = 
+						getApplicationContext().getApplicationInfo(); 
+						String filePath = app.sourceDir;
+						Intent intent = new Intent(Intent.ACTION_SEND); 
+						intent.setType("*/*"); 
+						java.io.File originalApk = new java.io.File(filePath); 
+						try {  
+								java.io.File tempFile = new java.io.File(getExternalCacheDir() + "/ExtractedApk"); 
+						 		if (!tempFile.isDirectory()) 
+									if (!tempFile.mkdirs()) 
+									return; 
+									tempFile = new java.io.File(tempFile.getPath() + "/" + 
+									"export.apk");
+									if (!tempFile.exists()) 
+										{
+											try{
+													if (!tempFile.createNewFile()) { 
+															return; }
+												}
+											catch (java.io.IOException e){} 
+										} 
+									java.io.InputStream in = new java.io.FileInputStream (originalApk);
+									java.io.OutputStream out = new java.io.FileOutputStream(tempFile);
+									byte[] buf = new byte[1024];
+									int len; 
+									while ((len = in.read(buf)) > 0) { 
+												out.write(buf, 0, len); 
+									} 
+									in.close(); 
+									out.close(); 
+									intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(tempFile));
+									startActivity(Intent.createChooser(intent, "Share app via"));
+						} 
+						catch (java.io.IOException e) 
+						{ showMessage(e.toString()); 
+						} 
+			}
