@@ -1,0 +1,14 @@
+			StrictMode.VmPolicy.Builder builder = 
+				new StrictMode.VmPolicy.Builder(); 
+				StrictMode.setVmPolicy(builder.build());
+				if(Build.VERSION.SDK_INT>=24){ 
+					    try{
+								java.lang.reflect.Method m = 
+						        StrictMode.class.getMethod(
+								"disableDeathOnFileUriExposure"); 
+						        m.invoke(null); 
+							}
+						catch(Exception e){ 
+								showMessage(e.toString()); 
+							} 
+				}
